@@ -14,8 +14,14 @@ use constant {
 
 my @authors;
 
+my @folderauthors;
+
+my @allauthors;
+
 # top posts time period
 my $period = "all";
+
+my $save_dir = "./rips";
 
 # placeholder for getting top posts from, a subreddit
 my $sub_url_placeholder = "http://www.reddit.com/r/%s/top/.json?sort=top&t=%s&limit=100";
@@ -66,8 +72,30 @@ for my $sub (@subs) {
 	}
 	close $fh;
 	#Clear the authors-array for next subreddit
+	push(@allauthors, @authors);
 	undef(@authors);
 }
+
+#List of existing users in ripme-folder
+my @existing_users = `ls -1 $save_dir | grep reddit_user`;
+        foreach my $folderpath (@existing_users) {
+            chomp $folderpath;
+            my $user = $folderpath;
+            $user =~ s/reddit_user_//;
+            next if $user =~ m/^rips$/;
+            unless(grep /$user/i, @allauthors) {
+                push @folderauthors, $user;
+            }
+        }
+
+#Print all authors to authors.txt, one for each subreddit
+open my $fh2, '>', "$authorfolder/_0_folder_0_-authors.txt" or die "Cannot open output.txt: $!";
+foreach (@folderauthors)
+{
+    print $fh2 "$_\n";
+}
+close $fh2;
+
 
 sub get_json {
 	my $url	 = shift;

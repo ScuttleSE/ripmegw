@@ -10,6 +10,8 @@ First, run get_authors.pl. This will get the authors of the top posts in each of
 There will be one additional textfile created; _0_folder_0_-authors.txt
 This is a list of all useraccounts that are ripped, but do not show up in any of the lists. This may be old accounts that are no longer in the toplists.
 
+Alternatively you can run get_authors_all.pl. This will get the authors of the top posts in each of the subreddits in subreddits.txt, but merged into one single list with no duplicates.
+
 If you want to manually add a reddit-account to be ripped, just add the userid on its own row in any of the textfiles in /authors. The next time you run get_authors.pl it will be ripped
 
 Next, run rip_authors.pl, this will start the actual ripping.

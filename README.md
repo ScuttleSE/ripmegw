@@ -6,6 +6,8 @@ Found a wrapper for ripme a while ago, have expanded on it a bit
 * /authors will hold lists of reddit-accounts to rip, one file per subreddit
 * /rips will hold the ripped files
 
+Note: check filepaths in all the scripts. The current one is customized to run in /var/www
+
 First, run get_authors.pl. This will get the authors of the top posts in each of the subreddits you have in subreddits.txt
 There will be one additional textfile created; _0_folder_0_-authors.txt
 This is a list of all useraccounts that are ripped, but do not show up in any of the lists. This may be old accounts that are no longer in the toplists.
@@ -20,4 +22,5 @@ After each author has been ripped, it will be removed from the textfile in /auth
 
 Eventually, all the textfiles will be empty. When that is the case, re-run get_authors.pl and start over.
 
-
+The script checkripping.sh is a script created to run as a cron-job. It checks the modified-date on the authors.txt files. If the age of the file is older than 15 minutes, it will restart the ripping-process.
+This is a workaround for ripme which has a tendency to hang sometimes.

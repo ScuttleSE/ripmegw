@@ -36,6 +36,9 @@ my $authorfolder = "./authors";
 #Filename with list of reddit useraccounts to rip
 my $authorsfile = "authors.txt";
 
+#Filename with list of reddit useraccounts not to rip
+my $bannedauthorsfile = "banned_authors.txt";
+
 #Open the list of subreddits and read them into an array, @subs
 open my $handle, '<', $subredditfile or die "Cannot open list of subreddits";;
 chomp(my @subs = <$handle>);
@@ -99,10 +102,17 @@ my @existing_users = `ls -1 $save_dir | grep reddit_user`;
 
 my @unique_authors = uniq @authors;
 
+#Open the list of banned authors and read them into an array, @banned
+open my $handle2, '<', $bannedauthorsfile or die "Cannot open list of subreddits";;
+chomp(my @banned = <$handle2>);
+close $handle2;
+
 open my $fh, '>', "$authorfolder/all-authors.txt" or die "Cannot open output.txt: $!";
-foreach (@authors)
+foreach my $singleauthor (@authors)
 {
-    print $fh "$_\n";
+    unless(grep /$singleauthor/i, @banned) {
+    	print $fh "$singleauthor\n";
+    }
 }
 close $fh;
 
